@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Acklann.MailN
 {
@@ -15,21 +14,42 @@ namespace Acklann.MailN
             PostalCode = postalCode;
         }
 
+        /// <summary>
+        /// Get or set the street address.
+        /// </summary>
         public string Street1 { get; set; }
 
+        /// <summary>
+        /// Get or set the street address.
+        /// </summary>
         public string Street2 { get; set; }
 
+        /// <summary>
+        /// Get the street 1 and 2 address concatenated.
+        /// </summary>
         public string Street
         {
             get => string.Concat(Street1, ' ', Street2).Trim();
         }
 
+        /// <summary>
+        /// Get or set the city.
+        /// </summary>
         public string City { get; set; }
 
+        /// <summary>
+        /// Get or set the state.
+        /// </summary>
         public string State { get; set; }
 
+        /// <summary>
+        /// Get or set the country
+        /// </summary>
         public string Country { get; set; }
 
+        /// <summary>
+        /// Get or set the postal code.
+        /// </summary>
         public string PostalCode { get; set; }
 
         public static Address Parse(string text)
@@ -90,6 +110,8 @@ namespace Acklann.MailN
 
         #region IFormattable
 
+        /// <summary>Converts to string.</summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Concat(
@@ -102,6 +124,13 @@ namespace Acklann.MailN
                 );
         }
 
+        /// <summary>
+        /// Converts to string.
+        /// </summary>
+        /// <param name="format">The format.</param>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public string ToString(string format)
         {
             return ToString(string.Concat("{0:", (string.IsNullOrEmpty(format) ? "G" : format), '}'), new AddressFormatter());
@@ -119,6 +148,12 @@ namespace Acklann.MailN
 
         #region IEquatable
 
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="x">The first address.</param>
+        /// <param name="y">The second address.</param>
+        /// <returns></returns>
         public static bool Equals(Address x, Address y)
         {
             return
@@ -136,14 +171,32 @@ namespace Acklann.MailN
                 ;
         }
 
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other">other</paramref> parameter; otherwise, false.
+        /// </returns>
+        public bool Equals(Address other) => Equals(this, other);
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        public override bool Equals(object obj) => (obj is Address ? Equals(this, (Address)obj) : false);
+
         public static bool operator ==(Address x, Address y) => Address.Equals(x, y);
 
         public static bool operator !=(Address x, Address y) => !Address.Equals(x, y);
 
-        public bool Equals(Address other) => Equals(this, other);
-
-        public override bool Equals(object obj) => (obj is Address ? Equals(this, (Address)obj) : false);
-
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+        /// </returns>
         public override int GetHashCode()
         {
             return

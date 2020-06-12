@@ -22,7 +22,7 @@ namespace Acklann.MailN.MSTest.Tests
         }
 
         [DataTestMethod]
-        [DataRow("foo", "street1=a;street2=b;city=c;state=d;country=e;zip=f")]
+        [DataRow("G", "STREET1=a;STREET2=b;CITY=c;STATE=d;COUNTRY=e;ZIP=f")]
         public void Can_format_address(string format, string expected)
         {
             var address = new Address("a", "b", "c", "d", "e", "f");
@@ -41,7 +41,9 @@ namespace Acklann.MailN.MSTest.Tests
 
             yield return new object[] { "st1=a", "a", null, null, null, null, null };
             yield return new object[] { "st2=b", null, "b", null, null, null, null };
+            yield return new object[] { "cty=c", null, null, "c", null, null, null };
             yield return new object[] { "zip=f", null, null, null, null, null, "f" };
+            yield return new object[] { "street1=a;state=d", "a", null, null, "d", null, null };
         }
 
         #endregion Backing Members
