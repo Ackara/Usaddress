@@ -13,23 +13,30 @@ namespace Acklann.MailN.MSTest.Tests
         {
             var sut = Address.Parse(text);
 
-            Shouldly.ShouldBeStringTestExtensions.ShouldBe(sut.Street1, street1);
-            Shouldly.ShouldBeStringTestExtensions.ShouldBe(sut.Street2, street2);
-            Shouldly.ShouldBeStringTestExtensions.ShouldBe(sut.City, city);
-            Shouldly.ShouldBeStringTestExtensions.ShouldBe(sut.State, state);
-            Shouldly.ShouldBeStringTestExtensions.ShouldBe(sut.Country, country);
-            Shouldly.ShouldBeStringTestExtensions.ShouldBe(sut.PostalCode, zip);
+            ShouldBeStringTestExtensions.ShouldBe(sut.Street1, street1);
+            ShouldBeStringTestExtensions.ShouldBe(sut.Street2, street2);
+            ShouldBeStringTestExtensions.ShouldBe(sut.City, city);
+            ShouldBeStringTestExtensions.ShouldBe(sut.State, state);
+            ShouldBeStringTestExtensions.ShouldBe(sut.Country, country);
+            ShouldBeStringTestExtensions.ShouldBe(sut.PostalCode, zip);
         }
 
-        [DataTestMethod]
-        [DataRow("G", "STREET1=a;STREET2=b;CITY=c;STATE=d;COUNTRY=e;ZIP=f")]
+        [TestMethod]
+        [DynamicData(nameof(GetAddressFormats), DynamicDataSourceType.Method)]
         public void Can_format_address(string format, string expected)
         {
-            var address = new Address("a", "b", "c", "d", "e", "f");
+            var address = new Address("a", "b", "c", "d", "f", "e");
             address.ToString(format).ShouldBe(expected);
         }
 
         #region Backing Members
+
+        private static IEnumerable<object[]> GetAddressFormats()
+        {
+            yield return new object[] { "1", "a" };
+            yield return new object[] { "0", "a b" };
+            yield return new object[] { "G", "STREET1=a;STREET2=b;CITY=c;STATE=d;COUNTRY=e;ZIP=f" };
+        }
 
         private static IEnumerable<object[]> GetAddressDeserializationTestCases()
         {

@@ -2,11 +2,11 @@ using System;
 
 namespace Acklann.MailN
 {
-    internal class AddressFormatter : ICustomFormatter, IFormatProvider
+    internal class NameFormatter : ICustomFormatter, IFormatProvider
     {
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
-            if (arg is Address address)
+            if (arg is FullName name)
             {
                 char c;
                 int n = format.Length;
@@ -17,40 +17,22 @@ namespace Acklann.MailN
                     {
                         default: builder.Append(c); break;
 
-                        case 'G': builder.Append(address.ToString()); break;
-
-                        case 'C':
-                            builder.AppendLine($"{address.Street}")
-                                   .AppendLine($"{address.City}, {address.State} {address.PostalCode}")
-                                   .Append(address.Country);
-                            break;
-
-                        case 'c':
-                            builder.Append($"{address.Street} ")
-                                   .Append($"{address.City}, {address.State} {address.PostalCode} ")
-                                   .Append(address.Country);
-                            break;
-
-                        case '0':
-                            builder.Append(address.Street); break;
+                        case 'G': builder.Append(name.ToString()); break;
 
                         case '1':
-                            builder.Append(address.Street1); break;
+                        case 'f':
+                        case 'F':
+                            builder.Append(name.Given); break;
 
                         case '2':
-                            builder.Append(address.Street2); break;
+                        case 'm':
+                        case 'M':
+                            builder.Append(name.Middle); break;
 
                         case '3':
-                            builder.Append(address.City); break;
-
-                        case '4':
-                            builder.Append(address.State); break;
-
-                        case '5':
-                            builder.Append(address.Country); break;
-
-                        case '6':
-                            builder.Append(address.PostalCode); break;
+                        case 'l':
+                        case 'L':
+                            builder.Append(name.Family); break;
 
                         case '\\': /* Escape */
                             if ((i + 1) < n)

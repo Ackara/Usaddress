@@ -4,7 +4,7 @@ namespace Acklann.MailN
 {
     public struct Address : IEquatable<Address>, IFormattable
     {
-        public Address(string street1 = default, string street2 = default, string city = default, string state = default, string country = default, string postalCode = default)
+        public Address(string street1 = default, string street2 = default, string city = default, string state = default, string postalCode = default, string country = default)
         {
             Street1 = street1;
             Street2 = street2;
@@ -52,12 +52,16 @@ namespace Acklann.MailN
         /// </summary>
         public string PostalCode { get; set; }
 
+        /// <summary>
+        /// Create a new <see cref="Address"/> from text.
+        /// </summary>
+        /// <param name="text">The text.</param>
         public static Address Parse(string text)
         {
             if (string.IsNullOrEmpty(text)) return new Address();
 
             string[] valuePair;
-            string[] parts = text.Split(';');
+            string[] parts = text.Split(';', '\0');
             var result = new Address();
 
             for (int i = 0; i < parts.Length; i++)
