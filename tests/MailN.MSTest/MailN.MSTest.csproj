@@ -5,8 +5,14 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Acklann.MailN.MSTest</RootNamespace>
+    <RootNamespace>Tekcari.MailN</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="samples\**" />
+    <EmbeddedResource Remove="samples\**" />
+    <None Remove="samples\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Acklann.Diffa" Version="1.0.3" />
@@ -26,26 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="samples\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Sample.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Sample.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Sample.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Sample.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
 
 </Project>

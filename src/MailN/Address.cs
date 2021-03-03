@@ -1,6 +1,6 @@
 using System;
 
-namespace Acklann.MailN
+namespace Tekcari.MailN
 {
     public struct Address : IEquatable<Address>, IFormattable
     {

@@ -1,65 +1,65 @@
 using System;
 
-namespace Acklann.MailN
+namespace Tekcari.MailN
 {
-    internal class NameFormatter : ICustomFormatter, IFormatProvider
-    {
-        public string Format(string format, object arg, IFormatProvider formatProvider)
-        {
-            if (arg is FullName name)
-            {
-                char c;
-                int n = format.Length;
-                var builder = new System.Text.StringBuilder();
+	internal class NameFormatter : ICustomFormatter, IFormatProvider
+	{
+		public object GetFormat(Type formatType)
+		{
+			return formatType == typeof(ICustomFormatter) ? this : null;
+		}
 
-                for (int i = 0; i < n; i++)
-                    switch (c = format[i])
-                    {
-                        default: builder.Append(c); break;
+		public string Format(string format, object arg, IFormatProvider formatProvider)
+		{
+			if (arg is FullName name)
+			{
+				char c;
+				int n = format.Length;
+				var builder = new System.Text.StringBuilder();
 
-                        case 'G': builder.Append(name.ToString()); break;
+				for (int i = 0; i < n; i++)
+					switch (c = format[i])
+					{
+						default: builder.Append(c); break;
 
-                        case '1':
-                        case 'f':
-                        case 'F':
-                            builder.Append(name.Given); break;
+						case 'G': builder.Append(name.ToString()); break;
 
-                        case '2':
-                        case 'm':
-                        case 'M':
-                            builder.Append(name.Middle); break;
+						case '1':
+						case 'f':
+						case 'F':
+							builder.Append(name.Given); break;
 
-                        case '3':
-                        case 'l':
-                        case 'L':
-                            builder.Append(name.Family); break;
+						case '2':
+						case 'm':
+						case 'M':
+							builder.Append(name.Middle); break;
 
-                        case '\\': /* Escape */
-                            if ((i + 1) < n)
-                                builder.Append(format[++i]);
-                            else
-                                builder.Append(c);
-                            break;
-                    }
+						case '3':
+						case 'l':
+						case 'L':
+							builder.Append(name.Family); break;
 
-                return builder.ToString().Trim();
-            }
-            else return GetFallbackFormat(format, arg);
-        }
+						case '\\': /* Escape */
+							if ((i + 1) < n)
+								builder.Append(format[++i]);
+							else
+								builder.Append(c);
+							break;
+					}
 
-        public object GetFormat(Type formatType)
-        {
-            return formatType == typeof(ICustomFormatter) ? this : null;
-        }
+				return builder.ToString().Trim();
+			}
+			else return GetFallbackFormat(format, arg);
+		}
 
-        private string GetFallbackFormat(string format, object arg)
-        {
-            if (arg is IFormattable)
-                return ((IFormattable)arg).ToString(format, System.Globalization.CultureInfo.CurrentCulture);
-            else if (arg != null)
-                return arg.ToString();
-            else
-                return string.Empty;
-        }
-    }
+		private string GetFallbackFormat(string format, object arg)
+		{
+			if (arg is IFormattable)
+				return ((IFormattable)arg).ToString(format, System.Globalization.CultureInfo.CurrentCulture);
+			else if (arg != null)
+				return arg.ToString();
+			else
+				return string.Empty;
+		}
+	}
 }
