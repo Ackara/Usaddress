@@ -14,8 +14,8 @@ namespace Tekcari.MailN.Tests
 		{
 			var sut = Address.Parse(text);
 
-			ShouldBeStringTestExtensions.ShouldBe(sut.Street1, street1);
-			ShouldBeStringTestExtensions.ShouldBe(sut.Street2, street2);
+			ShouldBeStringTestExtensions.ShouldBe(sut.Line1, street1);
+			ShouldBeStringTestExtensions.ShouldBe(sut.Line2, street2);
 			ShouldBeStringTestExtensions.ShouldBe(sut.City, city);
 			ShouldBeStringTestExtensions.ShouldBe(sut.State, state);
 			ShouldBeStringTestExtensions.ShouldBe(sut.Country, country);

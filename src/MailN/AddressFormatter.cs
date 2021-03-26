@@ -40,10 +40,10 @@ namespace Tekcari.MailN
 							builder.Append(address.Street); break;
 
 						case '1':
-							builder.Append(address.Street1); break;
+							builder.Append(address.Line1); break;
 
 						case '2':
-							builder.Append(address.Street2); break;
+							builder.Append(address.Line2); break;
 
 						case '3':
 							builder.Append(address.City); break;
