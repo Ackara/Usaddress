@@ -6,7 +6,23 @@
     <IsPackable>false</IsPackable>
 
     <RootNamespace>Tekcari.MailN</RootNamespace>
-  </PropertyGroup>
+  
+<Title>MailN</Title>
+<Description>A collection of classes for representing U.S. addresses.</Description>
+<Version>0.0.7</Version>
+<AssemblyVersion>0.0.7</AssemblyVersion>
+<AssemblyFileVersion>0.0.7</AssemblyFileVersion>
+<RepositoryUrl>https://github.com/Ackara/MailN.git</RepositoryUrl>
+<PackageProjectUrl>https://github.com/Ackara/MailN</PackageProjectUrl>
+<PackageReleaseNotes>https://github.com/Ackara/MailN/blob/master/changelog.md</PackageReleaseNotes>
+<Company>Tekcari</Company>
+<Copyright>Copyright 2021 Tekcari, All Rights Reserved.</Copyright>
+<PackageLicenseFile>license.txt</PackageLicenseFile>
+
+<PackageIcon>icon.png</PackageIcon>
+
+<Authors>Ackara</Authors>
+</PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="samples\**" />
@@ -34,5 +50,11 @@
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
+
+
+
+
+
+
 
 </Project>

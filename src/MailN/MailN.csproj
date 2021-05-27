@@ -1,8 +1,45 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Acklann.MailN</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNamespace>Acklann.MailN</RootNamespace>
+		<Version>0.0.7</Version>
+		<AssemblyFileVersion>0.0.7</AssemblyFileVersion>
+		<AssemblyVersion>0.0.7</AssemblyVersion>
+	</PropertyGroup>
 
+	<PropertyGroup Label="Package">
+		<Title>MailN</Title>
+		<Description>A collection of classes for representing U.S. addresses.</Description>
+		<Copyright>Copyright 2021 Tekcari, All Rights Reserved.</Copyright>
+
+		<Company>Tekcari</Company>
+		<Authors>Ackara</Authors>
+
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/Ackara/MailN.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Ackara/MailN</PackageProjectUrl>
+		<PackageReleaseNotes>https://github.com/Ackara/MailN/blob/master/changelog.md</PackageReleaseNotes>
+
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageLicenseFile>license.txt</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
+
+	<ItemGroup Label="Package">
+		<Content Include="..\..\art\icon.png">
+			<Visible>false</Visible>
+			<PackagePath></PackagePath>
+		</Content>
+
+		<Content Include="..\..\license.txt">
+			<Visible>false</Visible>
+			<PackagePath></PackagePath>
+		</Content>
+
+		<Content Include="..\..\README.md">
+			<PackagePath></PackagePath>
+			<Visible>false</Visible>
+		</Content>
+	</ItemGroup>
 </Project>

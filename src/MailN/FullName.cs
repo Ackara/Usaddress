@@ -18,29 +18,29 @@ namespace Tekcari.MailN
 		/// <param name="suffix">The suffix.</param>
 		public FullName(string firstName, string lastName = default, string middleName = default, string suffix = default)
 		{
-			Given = firstName;
-			Middle = middleName;
-			Family = lastName;
+			FirstName = firstName;
+			MiddleName = middleName;
+			LastName = lastName;
 			Suffix = suffix;
 		}
 
 		/// <summary>
-		/// Gets or sets the given name.
+		/// Gets or sets the person's first name.
 		/// </summary>
-		public string Given { get; set; }
+		public string FirstName { get; set; }
 
 		/// <summary>
 		/// Gets or sets the middle name.
 		/// </summary>
-		public string Middle { get; set; }
+		public string MiddleName { get; set; }
 
 		/// <summary>
-		/// Gets or sets the family name.
+		/// Gets or sets the person's last name.
 		/// </summary>
-		public string Family { get; set; }
+		public string LastName { get; set; }
 
 		/// <summary>
-		/// Gets or sets the suffix.
+		/// Gets or sets the suffix. (e.g. PhD, Jr, etc)
 		/// </summary>
 		public string Suffix { get; set; }
 
@@ -82,7 +82,7 @@ namespace Tekcari.MailN
 		/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
 		public override string ToString()
 		{
-			return string.Join(" ", Given, Middle, Family, Suffix).Replace("  ", " ").Trim();
+			return string.Join(" ", FirstName, MiddleName, LastName, Suffix).Replace("  ", " ").Trim();
 		}
 
 		/// <summary>
@@ -122,11 +122,11 @@ namespace Tekcari.MailN
 		public static bool Equals(FullName a, FullName b)
 		{
 			return
-				string.Equals(a.Given, b.Given, StringComparison.InvariantCultureIgnoreCase)
+				string.Equals(a.FirstName, b.FirstName, StringComparison.InvariantCultureIgnoreCase)
 				&&
-				string.Equals(a.Middle, b.Middle, StringComparison.InvariantCultureIgnoreCase)
+				string.Equals(a.MiddleName, b.MiddleName, StringComparison.InvariantCultureIgnoreCase)
 				&&
-				string.Equals(a.Family, b.Family, StringComparison.InvariantCultureIgnoreCase)
+				string.Equals(a.LastName, b.LastName, StringComparison.InvariantCultureIgnoreCase)
 				&&
 				string.Equals(a.Suffix, b.Suffix, StringComparison.InvariantCultureIgnoreCase)
 				;
@@ -143,9 +143,9 @@ namespace Tekcari.MailN
 		public override int GetHashCode()
 		{
 			return
-				Given?.GetHashCode() ?? 0 ^
-				Middle?.GetHashCode() ?? 0 ^
-				Family?.GetHashCode() ?? 0 ^
+				FirstName?.GetHashCode() ?? 0 ^
+				MiddleName?.GetHashCode() ?? 0 ^
+				LastName?.GetHashCode() ?? 0 ^
 				Suffix?.GetHashCode() ?? 0;
 		}
 

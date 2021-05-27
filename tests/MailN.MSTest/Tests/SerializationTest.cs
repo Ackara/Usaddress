@@ -14,8 +14,8 @@ namespace Tekcari.MailN.Tests
 		{
 			var sut = Address.Parse(text);
 
-			ShouldBeStringTestExtensions.ShouldBe(sut.Street1, street1);
-			ShouldBeStringTestExtensions.ShouldBe(sut.Street2, street2);
+			ShouldBeStringTestExtensions.ShouldBe(sut.Line1, street1);
+			ShouldBeStringTestExtensions.ShouldBe(sut.Line2, street2);
 			ShouldBeStringTestExtensions.ShouldBe(sut.City, city);
 			ShouldBeStringTestExtensions.ShouldBe(sut.State, state);
 			ShouldBeStringTestExtensions.ShouldBe(sut.Country, country);
@@ -67,9 +67,9 @@ namespace Tekcari.MailN.Tests
 			{
 				"a",
 				new Action<FullName>(x=> {
-					x.Given.ShouldBe("a");
-					x.Family.ShouldBeNull();
-					x.Middle.ShouldBeNull();
+					x.FirstName.ShouldBe("a");
+					x.LastName.ShouldBeNull();
+					x.MiddleName.ShouldBeNull();
 					x.Suffix.ShouldBeNull();
 				})
 			};
@@ -78,9 +78,9 @@ namespace Tekcari.MailN.Tests
 			{
 				"a b",
 				new Action<FullName>(x=> {
-					x.Given.ShouldBe("a");
-					x.Family.ShouldBe("b");
-					x.Middle.ShouldBeNull();
+					x.FirstName.ShouldBe("a");
+					x.LastName.ShouldBe("b");
+					x.MiddleName.ShouldBeNull();
 					x.Suffix.ShouldBeNull();
 				})
 			};
@@ -89,9 +89,9 @@ namespace Tekcari.MailN.Tests
 			{
 				"john smith Jr.",
 				new Action<FullName>(x=> {
-					x.Given.ShouldBe("john");
-					x.Family.ShouldBe("smith");
-					x.Middle.ShouldBeNull();
+					x.FirstName.ShouldBe("john");
+					x.LastName.ShouldBe("smith");
+					x.MiddleName.ShouldBeNull();
 					x.Suffix.ShouldBe("Jr.");
 				})
 			};
@@ -100,9 +100,9 @@ namespace Tekcari.MailN.Tests
 			{
 				"john avery smith",
 				new Action<FullName>(x=> {
-					x.Given.ShouldBe("john");
-					x.Family.ShouldBe("smith");
-					x.Middle.ShouldBe("avery");
+					x.FirstName.ShouldBe("john");
+					x.LastName.ShouldBe("smith");
+					x.MiddleName.ShouldBe("avery");
 					x.Suffix.ShouldBeNull();
 				})
 			};
@@ -111,9 +111,9 @@ namespace Tekcari.MailN.Tests
 			{
 				"john abe smith",
 				new Action<FullName>( x => {
-					x.Given.ShouldBe("john");
-					x.Family.ShouldBe("smith");
-					x.Middle.ShouldBe("abe");
+					x.FirstName.ShouldBe("john");
+					x.LastName.ShouldBe("smith");
+					x.MiddleName.ShouldBe("abe");
 					x.Suffix.ShouldBeNull();
 				})
 			};
@@ -122,9 +122,9 @@ namespace Tekcari.MailN.Tests
 			{
 				"john a. smith",
 				new Action<FullName>( x => {
-					x.Given.ShouldBe("john");
-					x.Family.ShouldBe("smith");
-					x.Middle.ShouldBe("a.");
+					x.FirstName.ShouldBe("john");
+					x.LastName.ShouldBe("smith");
+					x.MiddleName.ShouldBe("a.");
 					x.Suffix.ShouldBeNull();
 				})
 			};
@@ -133,9 +133,9 @@ namespace Tekcari.MailN.Tests
 			{
 				"john smith jr.",
 				new Action<FullName>( x => {
-					x.Given.ShouldBe("john");
-					x.Family.ShouldBe("smith");
-					x.Middle.ShouldBeNull();
+					x.FirstName.ShouldBe("john");
+					x.LastName.ShouldBe("smith");
+					x.MiddleName.ShouldBeNull();
 					x.Suffix.ShouldBe("jr.");
 				})
 			};
@@ -144,9 +144,9 @@ namespace Tekcari.MailN.Tests
 			{
 				"john avery smith CPA",
 				new Action<FullName>( x => {
-					x.Given.ShouldBe("john");
-					x.Family.ShouldBe("smith");
-					x.Middle.ShouldBe("avery");
+					x.FirstName.ShouldBe("john");
+					x.LastName.ShouldBe("smith");
+					x.MiddleName.ShouldBe("avery");
 					x.Suffix.ShouldBe("CPA");
 				})
 			};

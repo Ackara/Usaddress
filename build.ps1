@@ -19,7 +19,7 @@ Param(
 	[string]$SecretsFilePath,
 
 	[Alias('c')]
-	[string]$Configuration = "Debug",
+	[string]$Configuration = $null,
 
 	[Alias('h')]
 	[switch]$Help,
@@ -30,7 +30,8 @@ Param(
 	[switch]$Production,
 	[switch]$Preview,
 	[switch]$Major,
-	[switch]$Minor
+	[switch]$Minor,
+	[switch]$Force
 )
 
 # Ensuring we have our Dependencies installed.
@@ -39,8 +40,13 @@ if(-not ((&dotnet --version) -match '\d+.\d+')) { throw "'dotnet' is not accessi
 if (-not ((&git --version) -match 'git version \d+\.\d+')) { throw "'git' is not accessible on this machine."; }
 
 # Initializing our default variables.
-if (($Tasks.Length -gt 0) -and ($Tasks[0] -like "publish")) { $Configuration = "Release"; }
-if ($Production -or $Preview) { $Configuration = "Release"; }
+$solutionConfig = "Debug";
+if ([string]::IsNullOrEmpty($Configuration))
+{
+	if (($Tasks.Length -gt 0) -and ($Tasks[0] -like "publish")) { $solutionConfig = "Release"; }
+	if ($Production -or $Preview) { $solutionConfig = "Release"; }
+}
+$Configuration = $solutionConfig;
 
 $environmentName = "local";
 if ($Preview) { $environmentName = "preview"; }
@@ -69,6 +75,7 @@ else
 	Write-Host -ForegroundColor DarkGray "Environment:   $environmentName";
 	Write-Host "";
 	Invoke-psake $taskFile -nologo -taskList $Tasks -properties @{
+		"Force"=$Force.IsPresent;
 		"Filter"=$Filter;
 		"MSBuildExe"=$msbuild;
 		"Major"=$Major.IsPresent;
@@ -78,7 +85,7 @@ else
 		"SolutionFolder"=$PSScriptRoot;
 		"SecretsFilePath"=$SecretsFilePath;
 		"EnvironmentName"=$environmentName;
-		"InPreview"=$Production.IsPresent;
+		"InPreview"=$Preview.IsPresent;
 		"InProduction"=$Production.IsPresent;
 		"Interactive"=(-not $NonInteractive.IsPresent);
 	}

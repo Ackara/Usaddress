@@ -24,20 +24,22 @@ namespace Tekcari.MailN
 
 						case 'G': builder.Append(name.ToString()); break;
 
+						case 'S': builder.Append(string.Join(" ", name.FirstName, name.LastName).Trim()); break;
+
 						case '1':
 						case 'f':
 						case 'F':
-							builder.Append(name.Given); break;
+							builder.Append(name.FirstName); break;
 
 						case '2':
 						case 'm':
 						case 'M':
-							builder.Append(name.Middle); break;
+							builder.Append(name.MiddleName); break;
 
 						case '3':
 						case 'l':
 						case 'L':
-							builder.Append(name.Family); break;
+							builder.Append(name.LastName); break;
 
 						case '\\': /* Escape */
 							if ((i + 1) < n)
