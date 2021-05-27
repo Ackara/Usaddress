@@ -1,8 +1,8 @@
 # SYNOPSIS: This is a psake task file.
-FormatTaskName "$(Write-Separator)`r`n  {0}`r`n$(Write-Separator)";
+FormatTaskName "$([string]::Concat([System.Linq.Enumerable]::Repeat('-', 70)))`r`n  {0}`r`n$([string]::Concat([System.Linq.Enumerable]::Repeat('-', 70)))";
 
 Properties {
-	$Dependencies = @("Ncrement");
+	$Dependencies = @(@{"Name"="Ncrement";"Version"="8.2.18"});
 
     # Arguments
 	$Major = $false;
@@ -35,12 +35,12 @@ Task "Restore-Dependencies" -alias "restore" -description "This task generate an
 -action {
 	# Import powershell module dependencies
 	# ==================================================
-	foreach ($moduleId in $Dependencies)
+	foreach ($module in $Dependencies)
 	{
-		$modulePath = Join-Path $ToolsFolder "$moduleId/*/*.psd1";
-		if (-not (Test-Path $modulePath)) { Save-Module $moduleId -Path $ToolsFolder; }
+		$modulePath = Join-Path $ToolsFolder "$($module.Name)/*/*.psd1";
+		if (-not (Test-Path $modulePath)) { Save-Module $module.Name -MaximumVersion $module.Version -Path $ToolsFolder; }
 		Import-Module $modulePath -Force;
-		Write-Host "  * imported the '$moduleId-$(Split-Path (Get-Item $modulePath).DirectoryName -Leaf)' powershell module.";
+		Write-Host "  * imported the '$($module.Name)-$(Split-Path (Get-Item $modulePath).DirectoryName -Leaf)' powershell module.";
 	}
 
 	# Generating the build manifest file
@@ -51,12 +51,33 @@ Task "Restore-Dependencies" -alias "restore" -description "This task generate an
 		Write-Host "  * added 'build/$(Split-Path $ManifestFilePath -Leaf)' to the solution.";
 	}
 
-	# Generating a secrets file template
+	# Restore dotnet tools
+	# ==================================================
+	Push-Location $SolutionFolder;
+	Exec { &dotnet tool restore; }
+	Pop-Location;
+
+	# Generating a secrets file
 	# ==================================================
 	if (-not (Test-Path $SecretsFilePath))
 	{
 		"{}" | Out-File $SecretsFilePath -Encoding utf8;
 		Write-Host "  * added '$(Split-Path $SecretsFilePath -Leaf)' to the solution.";
+	}
+
+	$templateFilePath = Join-Path $SolutionFolder "config-template.csv";
+	$valuePairs = Get-Content $templateFilePath | ConvertFrom-Csv;
+	foreach ($item in $valuePairs)
+	{
+		$key = (&{ if (([string]$item.Key).StartsWith('$')) { return ($EnvironmentName + $item.Key.Substring(1)); } else { return $item.Key; } });
+		$currentValue = &dotnet app-secret get --path $SecretsFilePath --key $key;
+		if ([string]::IsNullOrWhiteSpace($currentValue) -and $Interactive)
+		{
+			$value = Read-Host (Get-Alt $item.Description $key);
+		}
+
+		$value = Get-Alt $value $item.Default;
+		&dotnet app-secret set --path $SecretsFilePath --key $key --value $value;
 	}
 }
 
@@ -66,15 +87,38 @@ Task "Package-Solution" -alias "pack" -description "This task generates all depl
 -depends @("restore") -action {
 	if (Test-Path $ArtifactsFolder) { Remove-Item $ArtifactsFolder -Recurse -Force; }
 	New-Item $ArtifactsFolder -ItemType Directory | Out-Null;
+	$version = $ManifestFilePath | Select-NcrementVersionNumber $EnvironmentName;
+
+	$project = Join-Path $SolutionFolder "src/MailN/*.*proj" | Get-Item;
+	Write-Separator "dotnet pack $($project.BaseName) v$version";
+	Exec { &dotnet pack $project.FullName --output $ArtifactsFolder --configuration $Configuration --include-symbols -p:"PackageVersion=$version"; }
 }
 
 Task "Publish-NuGet-Packages" -alias "push-nuget" -description "This task publish all nuget packages to a nuget repository." `
 -precondition { return ($InProduction -or $InPreview ) -and (Test-Path $ArtifactsFolder -PathType Container) } `
--action { }
+-action {
+	foreach ($nuget in Get-ChildItem $ArtifactsFolder -Filter "*.nupkg" | where { $_.Name -inotlike "*symbol*" })
+	{
+		Write-Separator "dotnet nuget push $($nuget.BaseName)";
+		Exec { &dotnet nuget push $nuget.FullName --source "https://api.nuget.org/v3/index.json"; }
+	}
+}
 
 Task "Add-GitReleaseTag" -alias "tag" -description "This task tags the lastest commit with the version number." `
 -precondition { return ($InProduction -or $InPreview ) } `
--depends @("restore") -action { }
+-depends @("restore") -action {
+	$version = $ManifestFilePath | Select-NcrementVersionNumber $EnvironmentName -Format "C";
+
+	if (-not ((&git status | Out-String) -match 'nothing to commit'))
+	{
+		Exec { &git add .; }
+		Write-Separator "git commit";
+		Exec { &git commit -m "Increment version number to '$version'."; }
+	}
+
+	Write-Separator "git tag '$version'";
+	Exec { &git tag --annotate "v$version" --message "Version $version"; }
+}
 
 #endregion
 
@@ -133,7 +177,7 @@ Task "Run-Tests" -alias "test" -description "This task invoke all tests within t
 
 #endregion
 
-#region ----- FUNCTIONS ----------------------------------------------
+#region ----- FUNCTIONS ------------------------------------------------
 
 function Write-Value
 {
@@ -168,6 +212,33 @@ function Write-Separator([string]$Title = "", [int]$length = 70)
 		if ($header.Length -gt $length) { $header = $header.Substring(0, $length); }
 	}
 	Write-Host "`r`n$header`r`n" -ForegroundColor DarkGray;
+}
+
+function Get-Secret
+{
+	Param(
+		[Parameter(Mandatory)]
+		[string]$JPath,
+
+		[Parameter(Mandatory)]
+		[string]$EnvironmentVariable
+	)
+
+	$result = [Environment]::ExpandEnvironmentVariables("%$EnvironmentVariable%");
+	if ([string]::IsNullOrEmpty($result) -or ($result -eq "%$EnvironmentVariable%"))
+	{
+		$result = Get-Content $SecretsFilePath | Out-String | ConvertFrom-Json;
+		$properties = $JPath.Split(@('.', '/', ':'));
+		foreach($prop in $properties)
+		{
+			$result = $result.$prop;
+		}
+	}
+	return $result;
+}
+
+function Get-Alt([string]$value, [string]$default = ""){
+	if ([string]::IsNullOrWhiteSpace($value)) { return $default; } else { return $value; }
 }
 
 #endregion
