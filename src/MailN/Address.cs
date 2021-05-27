@@ -25,7 +25,7 @@ namespace Tekcari.MailN
 		public string Line2 { get; set; }
 
 		/// <summary>
-		/// Get the street 1 and 2 address concatenated.
+		/// Get the <see cref="Line1"/> and <see cref="Line2"/> members concatenated.
 		/// </summary>
 		public string Street
 		{
@@ -69,20 +69,20 @@ namespace Tekcari.MailN
 				valuePair = parts[i].Split('=');
 				if (valuePair.Length != 2) continue;
 
-				switch (valuePair[0].ToUpperInvariant())
-				{
-					case "S1":
-					case "ST":
-					case "ST1":
-					case "STREET1":
-						result.Line1 = valuePair[1];
-						break;
+                switch (valuePair[0].ToUpperInvariant())
+                {
+                    case "S1":
+                    case "ST":
+                    case "ST1":
+                    case "STREET1":
+                        result.Street1 = valuePair[1];
+                        break;
 
-					case "S2":
-					case "ST2":
-					case "STREET2":
-						result.Line2 = valuePair[1];
-						break;
+                    case "S2":
+                    case "ST2":
+                    case "STREET2":
+                        result.Street2 = valuePair[1];
+                        break;
 
 					case "C":
 					case "CTY":
@@ -101,13 +101,13 @@ namespace Tekcari.MailN
 						result.Country = valuePair[1];
 						break;
 
-					case "Z":
-					case "ZIP":
-					case "POSTALCODE":
-						result.PostalCode = valuePair[1];
-						break;
-				}
-			}
+                    case "Z":
+                    case "ZIP":
+                    case "POSTALCODE":
+                        result.PostalCode = valuePair[1];
+                        break;
+                }
+            }
 
 			return result;
 		}
