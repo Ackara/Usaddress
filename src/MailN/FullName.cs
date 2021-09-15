@@ -119,16 +119,22 @@ namespace Tekcari.MailN
 
 		#region IEquatable
 
-		public static bool Equals(FullName a, FullName b)
+		/// <summary>
+		/// Determines if the specified names are equal.
+		/// </summary>
+		/// <param name="a">The first name.</param>
+		/// <param name="b">The other name.</param>
+		/// <param name="comparison">The comparison (defaults to <see cref="StringComparison.InvariantCultureIgnoreCase"/>).</param>
+		public static bool Equals(FullName a, FullName b, StringComparison comparison = StringComparison.InvariantCultureIgnoreCase)
 		{
 			return
-				string.Equals(a.FirstName, b.FirstName, StringComparison.InvariantCultureIgnoreCase)
+				string.Equals(a.FirstName, b.FirstName, comparison)
 				&&
-				string.Equals(a.MiddleName, b.MiddleName, StringComparison.InvariantCultureIgnoreCase)
+				string.Equals(a.MiddleName, b.MiddleName, comparison)
 				&&
-				string.Equals(a.LastName, b.LastName, StringComparison.InvariantCultureIgnoreCase)
+				string.Equals(a.LastName, b.LastName, comparison)
 				&&
-				string.Equals(a.Suffix, b.Suffix, StringComparison.InvariantCultureIgnoreCase)
+				string.Equals(a.Suffix, b.Suffix, comparison)
 				;
 		}
 
@@ -136,8 +142,22 @@ namespace Tekcari.MailN
 
 		public static bool operator !=(FullName x, FullName y) => !FullName.Equals(x, y);
 
+		/// <summary>
+		/// Indicates whether the current object is equal to another object of the same type.
+		/// </summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>
+		/// true if the current object is equal to the <paramref name="other">other</paramref> parameter; otherwise, false.
+		/// </returns>
 		public bool Equals(FullName other) => Equals(this, other);
 
+		/// <summary>
+		/// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+		/// </summary>
+		/// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+		/// <returns>
+		///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+		/// </returns>
 		public override bool Equals(object obj) => (obj is FullName ? Equals(this, (FullName)obj) : false);
 
 		public override int GetHashCode()
