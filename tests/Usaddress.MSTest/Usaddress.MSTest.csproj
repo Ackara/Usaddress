@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Tekcari.MailN</RootNamespace>
+    <RootNamespace>Tekcari.Usaddress</RootNamespace>
   
 <Title>MailN</Title>
 <Description>A collection of classes for representing U.S. addresses.</Description>
@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MailN\MailN.csproj" />
+    <ProjectReference Include="..\..\src\Usaddress\Usaddress.csproj" />
   </ItemGroup>
 
   <ItemGroup>

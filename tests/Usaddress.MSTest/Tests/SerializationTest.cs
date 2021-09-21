@@ -3,7 +3,7 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 
-namespace Tekcari.MailN.Tests
+namespace Tekcari.Usaddress.Tests
 {
 	[TestClass]
 	public class SerializationTest

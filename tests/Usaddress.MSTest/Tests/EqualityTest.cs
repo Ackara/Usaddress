@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 
-namespace Tekcari.MailN.Tests
+namespace Tekcari.Usaddress.Tests
 {
 	[TestClass]
 	public class EqualityTest

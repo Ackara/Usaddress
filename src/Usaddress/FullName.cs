@@ -1,11 +1,11 @@
 using System;
 
-namespace Tekcari.MailN
+namespace Tekcari.Usaddress
 {
 	/// <summary>
 	/// Represents a person's name.
 	/// </summary>
-	/// <seealso cref="System.IEquatable{Tekcari.MailN.FullName}" />
+	/// <seealso cref="System.IEquatable{Tekcari.Usaddress.FullName}" />
 	/// <seealso cref="System.IFormattable" />
 	public struct FullName : IEquatable<FullName>, IFormattable
 	{
@@ -114,6 +114,8 @@ namespace Tekcari.MailN
 		}
 
 		public static implicit operator string(FullName obj) => obj.ToString();
+
+		public static explicit operator FullName(string obj) => Parse(obj);
 
 		#endregion IFormattable
 

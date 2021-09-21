@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<RootNamespace>Acklann.MailN</RootNamespace>
+		<RootNamespace>Acklann.Usaddress</RootNamespace>
 		<Version>0.0.7</Version>
 		<AssemblyFileVersion>0.0.7</AssemblyFileVersion>
 		<AssemblyVersion>0.0.7</AssemblyVersion>

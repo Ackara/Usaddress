@@ -1,6 +1,6 @@
 using System;
 
-namespace Tekcari.MailN
+namespace Tekcari.Usaddress
 {
 	public struct Address : IEquatable<Address>, IFormattable
 	{
