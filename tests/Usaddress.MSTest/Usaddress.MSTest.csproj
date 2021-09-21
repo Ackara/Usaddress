@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,9 +9,9 @@
   
 <Title>MailN</Title>
 <Description>A collection of classes for representing U.S. addresses.</Description>
-<Version>0.0.7</Version>
-<AssemblyVersion>0.0.7</AssemblyVersion>
-<AssemblyFileVersion>0.0.7</AssemblyFileVersion>
+<Version>0.0.8</Version>
+<AssemblyVersion>0.0.8</AssemblyVersion>
+<AssemblyFileVersion>0.0.8</AssemblyFileVersion>
 <RepositoryUrl>https://github.com/Ackara/MailN.git</RepositoryUrl>
 <PackageProjectUrl>https://github.com/Ackara/MailN</PackageProjectUrl>
 <PackageReleaseNotes>https://github.com/Ackara/MailN/blob/master/changelog.md</PackageReleaseNotes>

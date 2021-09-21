@@ -89,7 +89,7 @@ Task "Package-Solution" -alias "pack" -description "This task generates all depl
 	New-Item $ArtifactsFolder -ItemType Directory | Out-Null;
 	$version = $ManifestFilePath | Select-NcrementVersionNumber $EnvironmentName;
 
-	$project = Join-Path $SolutionFolder "src/MailN/*.*proj" | Get-Item;
+	$project = Join-Path $SolutionFolder "src/$SolutionName/*.*proj" | Get-Item;
 	Write-Separator "dotnet pack $($project.BaseName) v$version";
 	Exec { &dotnet pack $project.FullName --output $ArtifactsFolder --configuration $Configuration --include-symbols -p:"PackageVersion=$version"; }
 }
